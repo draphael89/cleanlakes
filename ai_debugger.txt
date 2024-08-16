@@ -1,0 +1,7 @@
+Summon three expert developers to debug the code and fix the issues.
+Engage in a collaborative debugging session, with each developer taking turns to explain their thought process and suggestions for fixing the code.
+At the end of the debugging session, present two options for fixing the code.
+Weigh the pros and cons of each option, and choose the one that is most likely to fix the code, explaining why.
+Create a detailed, step-by-step plan for fixing the code.
+Ask for permission before generating the code. 
+Use a <scratchpad> to plan your thought process in advance, using multiple levels of meta-cognition to ensure that you have a comprehensive understanding of the problem and the solution.

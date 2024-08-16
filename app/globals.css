@@ -1,0 +1,306 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* Import Tailwind CSS base styles */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Define color variables for light mode */
+:root {
+  --color-primary: #0077be;
+  --color-secondary: #00a8e8;
+  --color-accent: #90e0ef;
+  --color-background: #f7f9fc;
+  --color-text: #1a202c;
+  --color-text-light: #4a5568;
+  --color-primary-light: #3399cc;
+  --color-secondary-light: #33b5e5;
+  --color-primary-dark: #005c8f;
+  --color-secondary-dark: #0082b3;
+  --gradient-start: #0077be;
+  --gradient-end: #00a8e8;
+}
+
+/* Define color variables for dark mode */
+.dark {
+  --color-primary: #0096c7;
+  --color-secondary: #00b4d8;
+  --color-accent: #48cae4;
+  --color-background: #1a202c;
+  --color-text: #e2e8f0;
+  --color-text-light: #a0aec0;
+  --color-primary-light: #33add6;
+  --color-secondary-light: #33c3e0;
+  --color-primary-dark: #007399;
+  --color-secondary-dark: #008cb3;
+  --gradient-start: #005c8f;
+  --gradient-end: #0082b3;
+}
+
+/* Set up basic HTML and body styles */
+html {
+  min-height: 100%;
+  background: linear-gradient(to bottom, var(--gradient-start), var(--gradient-end));
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  min-height: 100vh;
+  color: var(--color-text);
+  background-color: transparent;
+  transition: color 0.3s ease;
+}
+
+/* Tailwind base layer customizations */
+@layer base {
+  /* Set default styles for headings */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold leading-tight;
+  }
+
+  /* Set default styles for paragraphs */
+  p {
+    @apply leading-relaxed;
+  }
+}
+
+/* Tailwind utility layer customizations */
+@layer utilities {
+  /* Add text shadow utility */
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  }
+  
+  /* Background color utilities */
+  .bg-primary {
+    background-color: var(--color-primary);
+  }
+  
+  .bg-secondary {
+    background-color: var(--color-secondary);
+  }
+  
+  /* Text color utilities */
+  .text-primary {
+    color: var(--color-primary);
+  }
+  
+  .text-secondary {
+    color: var(--color-secondary);
+  }
+  
+  .text-on-light {
+    color: var(--color-text);
+  }
+
+  .text-on-dark {
+    color: var(--color-text-light);
+  }
+
+  /* Transition utility for dark mode */
+  .dark-mode-transition {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  }
+
+  /* Glass effect utility */
+  .glass-effect {
+    @apply bg-white/10 dark:bg-gray-800/10 backdrop-blur-md;
+  }
+
+  /* Hover lift effect utility */
+  .hover-lift {
+    @apply transition-transform duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg;
+  }
+
+  /* Text color utility for backgrounds */
+  .text-on-background {
+    @apply text-white dark:text-gray-100;
+  }
+
+  /* Gradient text shadow utility */
+  .gradient-text-shadow {
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Section padding utility */
+  .section-padding {
+    @apply py-16 sm:py-24 md:py-32;
+  }
+
+  /* Container padding utility */
+  .container-padding {
+    @apply px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Gradient text utility */
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-light to-secondary-light dark:from-primary-dark dark:to-secondary-dark;
+  }
+
+  /* Responsive grid utility */
+  .responsive-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8;
+  }
+}
+
+/* Tailwind components layer customizations */
+@layer components {
+  /* Primary button styles */
+  .btn-primary {
+    @apply bg-primary text-white px-8 py-4 rounded-full font-semibold
+      transition-all duration-300 ease-in-out
+      hover:bg-secondary hover:shadow-lg
+      focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-opacity-50
+      active:transform active:scale-95
+      cursor-pointer inline-block;
+  }
+
+  .btn-primary:focus {
+    --tw-ring-color: var(--color-secondary);
+  }
+
+  /* Card component styles */
+  .card {
+    @apply bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl;
+  }
+
+  /* Input component styles */
+  .input {
+    @apply w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-700 
+           focus:outline-none focus:ring-2 focus:ring-opacity-50
+           bg-white dark:bg-gray-700 text-gray-900 dark:text-white
+           transition-all duration-300;
+  }
+
+  .input:focus {
+    --tw-ring-color: var(--color-primary);
+  }
+
+  .dark .input:focus {
+    --tw-ring-color: var(--color-primary-light);
+  }
+
+  /* Label component styles */
+  .label {
+    @apply block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1;
+  }
+
+  /* Card glow effect */
+  .card-glow {
+    position: relative;
+  }
+
+  .card-glow::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 0 20px rgba(0, 100, 255, 0.15);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    pointer-events: none;
+  }
+
+  .card-glow:hover::after {
+    opacity: 1;
+  }
+
+  /* Section container */
+  .section-container {
+    @apply bg-white/10 backdrop-filter backdrop-blur-md;
+  }
+
+  /* Wave transition */
+  .wave-transition {
+    color: rgba(255, 255, 255, 0.1);
+    margin-top: -50px;
+    margin-bottom: -50px;
+  }
+}
+
+/* Animation keyframes */
+@keyframes fade-in-down {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Animation classes */
+.animate-fade-in-down {
+  animation: fade-in-down 0.5s ease-out;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.5s ease-out;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out;
+}
+
+/* Focus styles */
+:focus {
+  outline: 2px solid var(--color-secondary);
+  outline-offset: 2px;
+}
+
+/* Responsive typography */
+@screen sm {
+  html { font-size: 14px; }
+  h1 { @apply text-5xl; }
+  h2 { @apply text-4xl; }
+  h3 { @apply text-3xl; }
+}
+
+@screen md {
+  html { font-size: 16px; }
+  h1 { @apply text-6xl; }
+  h2 { @apply text-5xl; }
+  h3 { @apply text-4xl; }
+}
+
+@screen lg {
+  html { font-size: 18px; }
+  h1 { @apply text-7xl; }
+  h2 { @apply text-6xl; }
+  h3 { @apply text-5xl; }
+}
+
+/* LakeCarousel specific styles */
+.parallax-bg {
+  transform: scale(1.1);
+  transition: transform 0.3s ease-out;
+}
+
+.card-glow:hover .parallax-bg {
+  transform: scale(1.05);
+}
+
+.pulse-animation {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+  }
+}

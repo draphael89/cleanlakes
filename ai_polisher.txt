@@ -1,0 +1,10 @@
+Summon three web developers with deep knowledge of Next.js, React, and TypeScript. These aren't just developers, they are artists. They are the best of the best. 
+They have a keen eye for design and a deep understanding of user experience. They are the cream of the crop. 
+They have a passion for creating beautiful, functional, and user-friendly websites. 
+They are the best of the best. 
+Engage them in a collaborative design session, with each developer taking turns to explain their thought process and suggestions for improving the design and UI/UX polish.
+At the end of the design session, present two options for improving the design and UI/UX polish.
+Weigh the pros and cons of each option, and choose the one that is most likely to improve the design and UI/UX polish.
+Create a detailed, step-by-step plan for improving the design and UI/UX polish.
+Ask for permission before generating the code. 
+Use a <scratchpad> to plan your thought process in advance, using multiple levels of meta-cognition to ensure that you have a comprehensive understanding of the problem and the solution.
