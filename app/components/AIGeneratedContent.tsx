@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface AIGeneratedContentProps {
-  lakeName: string;
+  lakeName: string; // Keep this as lakeName since it's used for display
 }
 
 const AIGeneratedContent: React.FC<AIGeneratedContentProps> = ({ lakeName }) => {

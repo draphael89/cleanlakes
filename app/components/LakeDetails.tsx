@@ -1,101 +1,144 @@
 'use client';
 
 import React, { Suspense } from 'react';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import { ErrorBoundary } from 'react-error-boundary';
 
-// Dynamic imports for client-side components
-const LakeDataChart = dynamic(() => import('./LakeDataChart'), {
-  loading: () => <p>Loading chart...</p>
-});
-const AIGeneratedContent = dynamic(() => import('./AIGeneratedContent'), {
-  loading: () => <p>Loading AI content...</p>
-});
-const MapboxMap = dynamic(() => import('./MapboxMap'), {
-  ssr: false,
-  loading: () => <p>Loading map...</p>
-});
+const LakeMap = dynamic(() => import('./LakeMap'), { ssr: false });
+const LakeDataChart = dynamic(() => import('./LakeDataChart'));
+const WeatherInfo = dynamic(() => import('./WeatherInfo'));
+const NearbyAttractions = dynamic(() => import('./NearbyAttractions'));
+const RelatedLakes = dynamic(() => import('./RelatedLakes'));
 
-interface WeatherData {
-  temperature: number;
-  precipitation: number;
-}
-
-interface WaterData {
-  temperature: number;
-  level: number;
-}
-
-interface BiodiversityData {
-  speciesCount: number;
-}
-
-interface LakeData {
+interface Lake {
+  id: string;
   name: string;
-  state: string;
-  latitude: number;
-  longitude: number;
-  weatherData: WeatherData;
-  waterData: WaterData;
-  biodiversityData: BiodiversityData;
-}
-
-interface ChartDataPoint {
-  date: string;
-  waterLevel: number;
-  temperature: number;
+  description: string;
+  imageUrl: string;
+  location: {
+    latitude: number;
+    longitude: number;
+  };
+  statistics: {
+    area: number;
+    maxDepth: number;
+    averageDepth: number;
+  };
+  waterQuality: string; // Changed to string to match page.tsx
+  activities: string[];
 }
 
 interface LakeDetailsProps {
-  lakeData: LakeData;
-  chartData: ChartDataPoint[];
+  lake: Lake;
 }
 
-const LakeDetails: React.FC<LakeDetailsProps> = ({ lakeData, chartData }) => {
+interface ErrorFallbackProps {
+  error: Error;
+  resetErrorBoundary: () => void;
+}
+
+const ErrorFallback: React.FC<ErrorFallbackProps> = ({ error, resetErrorBoundary }) => (
+  <div role="alert" className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 my-4 rounded">
+    <p className="font-bold">Oops! Something went wrong:</p>
+    <pre className="mt-2 text-sm">{error.message}</pre>
+    <button 
+      onClick={resetErrorBoundary}
+      className="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+    >
+      Try again
+    </button>
+  </div>
+);
+
+const LakeDetails: React.FC<LakeDetailsProps> = ({ lake }) => {
   return (
-    <div className="max-w-4xl mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-4">{lakeData.name}</h1>
-      <p className="text-xl mb-2">State: {lakeData.state}</p>
-      
-      <ErrorBoundary fallback={<div>Error loading map</div>}>
-        <Suspense fallback={<div>Loading map...</div>}>
-          <div className="mb-6">
-            <MapboxMap latitude={lakeData.latitude} longitude={lakeData.longitude} zoom={10} />
-          </div>
-        </Suspense>
-      </ErrorBoundary>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="space-y-12"
+      >
+        <section className="text-center">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">{lake.name}</h1>
+          <p className="text-xl text-gray-700 max-w-3xl mx-auto">{lake.description}</p>
+        </section>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-        <div className="bg-blue-100 p-4 rounded-lg">
-          <h2 className="text-xl font-semibold mb-2">Weather</h2>
-          <p>Temperature: {lakeData.weatherData.temperature}°C</p>
-          <p>Precipitation: {lakeData.weatherData.precipitation} mm</p>
-        </div>
-        <div className="bg-blue-100 p-4 rounded-lg">
-          <h2 className="text-xl font-semibold mb-2">Water Data</h2>
-          <p>Water Temperature: {lakeData.waterData.temperature}°C</p>
-          <p>Water Level: {lakeData.waterData.level} m</p>
-        </div>
-        <div className="bg-blue-100 p-4 rounded-lg">
-          <h2 className="text-xl font-semibold mb-2">Biodiversity</h2>
-          <p>Species Count: {lakeData.biodiversityData.speciesCount}</p>
-        </div>
-      </div>
+        <section className="relative h-[50vh] md:h-[60vh] rounded-lg overflow-hidden">
+          <Image
+            src={lake.imageUrl}
+            alt={lake.name}
+            layout="fill"
+            objectFit="cover"
+            priority
+            className="transition-transform duration-300 hover:scale-105"
+          />
+        </section>
+        
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            <h2 className="text-2xl font-semibold mb-4">Lake Statistics</h2>
+            <ul className="space-y-2">
+              <li>Area: {lake.statistics.area} km²</li>
+              <li>Max Depth: {lake.statistics.maxDepth} m</li>
+              <li>Average Depth: {lake.statistics.averageDepth} m</li>
+            </ul>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.4 }}
+          >
+            <h2 className="text-2xl font-semibold mb-4">Water Quality</h2>
+            <p>{lake.waterQuality}</p>
+          </motion.div>
+        </section>
 
-      <ErrorBoundary fallback={<div>Error loading chart</div>}>
-        <Suspense fallback={<div>Loading chart...</div>}>
-          <div className="mt-8">
-            <h2 className="text-2xl font-semibold mb-4">Historical Data</h2>
-            <LakeDataChart data={chartData} />
-          </div>
-        </Suspense>
-      </ErrorBoundary>
+        <section>
+          <h2 className="text-2xl font-semibold mb-4">Activities</h2>
+          <ul className="list-disc list-inside">
+            {lake.activities.map((activity, index) => (
+              <li key={index}>{activity}</li>
+            ))}
+          </ul>
+        </section>
 
-      <ErrorBoundary fallback={<div>Error loading AI content</div>}>
-        <Suspense fallback={<div>Loading AI content...</div>}>
-          <AIGeneratedContent lakeName={lakeData.name} />
-        </Suspense>
-      </ErrorBoundary>
+        <ErrorBoundary FallbackComponent={ErrorFallback}>
+          <Suspense fallback={<div className="h-96 bg-gray-100 animate-pulse rounded-lg"></div>}>
+            <LakeMap latitude={lake.location.latitude} longitude={lake.location.longitude} />
+          </Suspense>
+        </ErrorBoundary>
+
+        <ErrorBoundary FallbackComponent={ErrorFallback}>
+          <Suspense fallback={<div className="h-80 bg-gray-100 animate-pulse rounded-lg"></div>}>
+            <LakeDataChart lakeId={lake.id} />
+          </Suspense>
+        </ErrorBoundary>
+
+        <ErrorBoundary FallbackComponent={ErrorFallback}>
+          <Suspense fallback={<div className="h-40 bg-gray-100 animate-pulse rounded-lg"></div>}>
+            <WeatherInfo location={lake.location} />
+          </Suspense>
+        </ErrorBoundary>
+
+        <ErrorBoundary FallbackComponent={ErrorFallback}>
+          <Suspense fallback={<div className="h-60 bg-gray-100 animate-pulse rounded-lg"></div>}>
+            <NearbyAttractions location={lake.location} />
+          </Suspense>
+        </ErrorBoundary>
+
+        <ErrorBoundary FallbackComponent={ErrorFallback}>
+          <Suspense fallback={<div className="h-80 bg-gray-100 animate-pulse rounded-lg"></div>}>
+            <RelatedLakes currentLakeId={lake.id} />
+          </Suspense>
+        </ErrorBoundary>
+      </motion.div>
     </div>
   );
 };
